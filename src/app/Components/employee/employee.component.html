@@ -1,1 +1,170 @@
-<p>employee works!</p>
+<div class="container-fluid">
+  <div class="row p-2 bg-info">
+    <div class="col-6">
+      <h3>Employee List</h3>
+    </div>
+    <div class="col-6 text-end">
+      <button class="btn btn-warning" (click)="openModal()">
+        Add Employee
+      </button>
+    </div>
+  </div>
+  @if(employeeList && employeeList.length > 0){
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <td>Name</td>
+        <td>Email</td>
+        <td>Mobile</td>
+        <td>Age</td>
+        <td>Salary</td>
+        <td>Status</td>
+        <td class="text-center">Action</td>
+      </tr>
+    </thead>
+    <tbody>
+      @for (item of employeeList; track $index) {
+      <tr>
+        <td>{{ item.name }}</td>
+        <td>{{ item.email }}</td>
+        <td>{{ item.mobile }}</td>
+        <td>{{ item.age }}</td>
+        <td>{{ item.salary }}</td>
+        <td>{{ item.status }}</td>
+        <td class="text-center">
+          <button class="btn btn-primary" (click)="onEdit(item)">Edit</button>
+          &nbsp;
+          <button class="btn btn-warning" (click)="onDelete(item.id)">
+            Delete
+          </button>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+  } 
+  @else {
+  <h5 class="text-center p-5">Employee Not Found</h5>
+  }
+</div>
+
+<!-- The Modal -->
+<div class="modal" id="myModal" #myModal>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header bg-info">
+        @if(employeeform.value.id != 0){
+        <h4 class="modal-title">Update Employee</h4>
+        } @else {
+        <h4 class="modal-title">Add Employee</h4>
+        }
+
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          (click)="closeModal()"
+        ></button>
+      </div>
+      <form [formGroup]="employeeform" (ngSubmit)="onSubmit()">
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+              <input
+                type="text"
+                formControlName="name"
+                name="name"
+                placeholder="Name"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-6">
+              <input
+                type="text"
+                formControlName="email"
+                name="email"
+                placeholder="Email"
+                class="form-control"
+              />
+            </div>
+            <div class="col-6">
+              <input
+                type="text"
+                formControlName="mobile"
+                name="mobile"
+                placeholder="Mobile"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-6">
+              <input
+                type="number"
+                formControlName="age"
+                name="age"
+                placeholder="Age"
+                class="form-control"
+              />
+            </div>
+            <div class="col-6">
+              <input
+                type="number"
+                formControlName="salary"
+                name="salary"
+                placeholder="Salary"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-12">
+              <div class="form-group">
+                <input
+                  type="checkbox"
+                  formControlName="status"
+                  name="status"
+                  class="form-check-input"
+                />
+                <label>&nbsp;Active ?</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          @if(employeeform.value.id != 0){
+          <button
+            type="submit"
+            [disabled]="this.employeeform.invalid"
+            class="btn btn-danger"
+          >
+            Update
+          </button>
+          } @else {
+          <button
+            type="submit"
+            [disabled]="this.employeeform.invalid"
+            class="btn btn-primary"
+          >
+            Save
+          </button>
+          }
+          <button
+            type="button"
+            class="btn btn-danger"
+            data-bs-dismiss="modal"
+            (click)="closeModal()"
+          >
+            Close
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
